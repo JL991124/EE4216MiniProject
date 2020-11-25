@@ -37,6 +37,7 @@ var app = new Vue( {
         },
 
         ViewNote: async function() {
+            this.Notes = [];
             await fetch('http://54.226.195.55:8080/api/memo', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -66,8 +67,7 @@ var app = new Vue( {
             })
             .then(res => res.text())
             .then(data => this.MyToken = data)           
-            if (this.MyToken.length==64) {
-                
+            if (this.MyToken.length==64) {                
                 this.ViewNote(); 
             }                    
         },
@@ -102,6 +102,7 @@ var app = new Vue( {
                 headers: {}
             })
             .then(res => res.text())
+            .then(console.log)
             this.AddContent = '';
             this.ViewNote();
         },
