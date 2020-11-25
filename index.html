@@ -78,7 +78,7 @@
                         </div>
                             
                         <img class="icon-btn" v-else @click="EditNote(Note.id, Note.content, Note.color, Note.size)" src="./icon/edit.png">
-                        <img class="icon-btn" @click="DeleteNote(Note.id)" src="./icon/delete.png">                        
+                        <img v-if="isEdit==false" class="icon-btn" @click="DeleteNote(Note.id)" src="./icon/delete.png">                        
                     </div>
                 </div>
             </div>
