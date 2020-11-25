@@ -1,0 +1,172 @@
+header {
+    padding: 1px 10px;
+    text-align: left;
+    background: lightskyblue;
+    color: white;
+}
+
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    display:flex;
+}
+
+section {
+    min-height: 100vh;
+    width: 1125px;
+    background-color: lightgrey;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {   
+    padding: 5px;
+    border: 1px solid #c3c3c3;    
+
+}
+
+input[type=text], input[type=password] {    
+    padding: 3px;
+    margin: 3px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    width: 40%;
+}
+
+.login-btn {
+    background-color: #5bbd7c;
+    color: white;
+    padding: 3px 5px;
+    margin-left: 8%;
+    border: none;
+    cursor: pointer;    
+    width: 20%;
+}
+
+.login-condition-container {
+    padding: 1px 10px;
+    border: 1px solid #c3c3c3;
+}
+
+.login-condition-container>h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: medium;
+}
+
+.login-condition-container>h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+    word-break: break-all;
+}
+
+.add-note-container {
+    padding: 1px 10px;
+    margin: 10px;
+    border: 1px solid #c3c3c3;
+    height: auto;
+    word-break: break-all;
+}
+
+.add-note-container-yellow {
+    background-color: lightyellow;
+    padding: 1px 10px;
+    margin: 10px;
+    border: 1px solid #c3c3c3;
+    height: auto;
+    word-break: break-all;    
+}
+
+.add-note-container-green {
+    background-color: lightseagreen;
+    padding: 1px 10px;
+    margin: 10px;
+    border: 1px solid #c3c3c3;
+    height: auto;  
+    word-break: break-all;  
+}
+
+.add-note-container-blue {
+    background-color: lightskyblue;
+    padding: 1px 10px;
+    margin: 10px;
+    border: 1px solid #c3c3c3;
+    height: auto;  
+    word-break: break-all;  
+}
+
+h2 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+}
+
+.NoteContent {
+    overflow:hidden;
+    resize:none;
+    width: 95%;
+    padding:5px;
+    font-size:16px;    
+    display:block;
+    border-radius:10px;
+    border:1px solid #adceee;
+}
+
+.NoteContent-S {
+    overflow:hidden;
+    resize:none;
+    width: 95%;
+    padding:5px;
+    font-size:12px;    
+    display:block;
+    border-radius:10px;
+    border:1px solid #adceee;
+}
+
+.NoteContent-L {
+    overflow:hidden;
+    resize:none;
+    width: 95%;
+    padding:5px;
+    font-size:24px;    
+    display:block;
+    border-radius:10px;
+    border:1px solid #adceee;
+}
+
+.button-container {
+    text-align: right;
+}
+
+.icon-btn {
+    padding: 3px 5px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;    
+    height: 20px;
+    width: 20px;
+}
+
+.col-icon-btn {
+    padding: 3px 5px;
+    margin: 5px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;    
+    height: 20px;
+    width: 20px;
+}
+
+.PM {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:16px;
+}
+.PS {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+}
+.PL {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:24px;
+}

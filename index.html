@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+</html>
+<body>
+    <section>
+        <header>
+            <h1>Sticky Notes</h1>
+        </header>
+        <div id = "app">
+
+            <div class="login-container">
+                <label for="uname"><b>Username:</b></label>
+                <input type="text" placeholder="Enter Username" id="uname" required>
+                <button class="login-btn" @click="CreateUser" >Create</button>
+                <br>
+                <label for="psw"><b>Password:&nbsp</b></label>
+                <input v-bind:type="MyToken.length==0?'text':'Password'" placeholder="Enter Password" id="pw" required>
+                <button class="login-btn" @click="UserLogin();GetTokenpw();">Login</button>              
+            </div>
+
+            <div class="login-condition-container">                
+                <h2 v-if="MyToken.length==0 && CreateStatus.length==0">Not Yet Login</h2>
+                <b v-else-if="MyToken.length==64 && CreateStatus.length==0"></b>                
+                <h2 v-else-if="MyToken==='GGWP'">Invalid Username or Password</h2>
+                <h2 v-else-if="CreateStatus==='done'">Account Created Successfuly, Please Login.</h2>               
+                <h2 v-else>Fail to Create, username already existed</h2>
+            </div>
+
+            <div v-if="MyToken.length==64">        
+                <div v-bind:class="AddColour=='Grey'?'add-note-container':
+                                    AddColour=='Yellow'?'add-note-container-yellow':
+                                    AddColour=='Green'?'add-note-container-green':'add-note-container-blue'">
+                    
+                    <h2>New Note:</h2>            
+                    <textarea v-bind:class="AddSize==1?'NoteContent':AddSize==0?'NoteContent-S':'NoteContent-L'"
+                                             v-model="AddContent" placeholder="Type here ..." ></textarea>
+                    <div class="button-container">                        
+                        <img class="col-icon-btn" @click="EditCol('Grey')" src="./icon/grey.png">
+                        <img class="col-icon-btn" @click="EditCol('Yellow')" src="./icon/yellow.png">
+                        <img class="col-icon-btn" @click="EditCol('Green')" src="./icon/green.png">
+                        <img class="col-icon-btn" @click="EditCol('Blue')" src="./icon/blue.png">
+                        
+                        <img class="icon-btn" @click="EditCol('0')" src="./icon/dec.png">
+                        <img class="icon-btn" @click="EditCol('1')" src="./icon/a.png">
+                        <img class="icon-btn" @click="EditCol('2')" src="./icon/increase.png">
+
+                        <img class="icon-btn" @click="AddNote" src="./icon/add-button.png">
+                        <img class="icon-btn" @click="ViewNote" src="./icon/refresh.png">
+                    </div>                    
+                </div>
+                <div class="view-notes-container">
+                    
+                    <div v-for="Note in Notes" v-bind:class="(isEdit && EditColour=='Grey' && Note.id==EditId) || (Note.id!=EditId && Note.color=='Grey')?'add-note-container':
+                                                             (isEdit && EditColour=='Yellow' && Note.id==EditId) || (Note.id!=EditId && Note.color=='Yellow')?'add-note-container-yellow':
+                                                             (isEdit && EditColour=='Green' && Note.id==EditId) || (Note.id!=EditId && Note.color=='Green')?'add-note-container-green':
+                                                             (isEdit && EditColour=='Blue' && Note.id==EditId) || (Note.id!=EditId && Note.color=='Blue')?'add-note-container-blue':'add-note-container'">                    
+                        <hr>
+                        <textarea v-if="isEdit && Note.id==EditId" v-bind:class="EditSize==1?'NoteContent': EditSize==0?'NoteContent-S':'NoteContent-L'"
+                                     v-model="EditContent">{{Note.content}}</textarea>
+                        <p v-else v-bind:class="Note.size==1?'PM':Note.size==2?'PL':'PS'" id="NoteContent">{{Note.content}}</p>
+                                                
+                        <div class="button-container" v-if="isEdit && Note.id==EditId" >
+                            <img class="col-icon-btn" @click="UpdateCol('Grey')" src="./icon/grey.png">
+                            <img class="col-icon-btn" @click="UpdateCol('Yellow')" src="./icon/yellow.png">
+                            <img class="col-icon-btn" @click="UpdateCol('Green')" src="./icon/green.png">
+                            <img class="col-icon-btn" @click="UpdateCol('Blue')" src="./icon/blue.png">
+                                                       
+                            <img class="icon-btn" @click="UpdateCol('0')" src="./icon/dec.png">
+                            <img class="icon-btn" @click="UpdateCol('1')" src="./icon/a.png">
+                            <img class="icon-btn" @click="UpdateCol('2')" src="./icon/increase.png">
+                            <br>
+                            <img class="icon-btn" @click="UpdateNote(Note.id)" src="./icon/save.png">
+                        </div>
+                            
+                        <img class="icon-btn" v-else @click="EditNote(Note.id, Note.content, Note.color, Note.size)" src="./icon/edit.png">
+                        <img class="icon-btn" @click="DeleteNote(Note.id)" src="./icon/delete.png">                        
+                    </div>
+                </div>
+            </div>
+        </div>         
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="script.js"></script>
+</body>
