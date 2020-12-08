@@ -13,19 +13,22 @@
         </header>
         <div id = "app">
 
-            <div class="login-container">
+            <div v-if="MyToken.length!=64" class="login-container">
                 <label for="uname"><b>Username:</b></label>
-                <input type="text" placeholder="Enter Username" id="uname" required>
+                <input id="uname" ref="unameref" type="text" placeholder="Enter Username" required>
                 <button class="login-btn" @click="CreateUser" >Create</button>
                 <br>
-                <label for="psw"><b>Password:&nbsp</b></label>
-                <input v-bind:type="MyToken.length==0?'text':'Password'" placeholder="Enter Password" id="pw" required>
+                <label for="pw"><b>Password:&nbsp</b></label>
+                <input id="pw" type="Password" placeholder="Enter Password" required>
                 <button class="login-btn" @click="UserLogin();GetTokenpw();">Login</button>              
             </div>
 
             <div class="login-condition-container">                
                 <h2 v-if="MyToken.length==0 && CreateStatus.length==0">Not Yet Login</h2>
-                <b v-else-if="MyToken.length==64 && CreateStatus.length==0"></b>                
+                <div v-else-if="MyToken.length==64 && CreateStatus.length==0">
+                    <span><b>Welcome</b></span>
+                    <button class="logout-btn" @click="UserLogout">Logout</button> 
+                </div>                
                 <h2 v-else-if="MyToken==='GGWP'">Invalid Username or Password</h2>
                 <h2 v-else-if="CreateStatus==='done'">Account Created Successfuly, Please Login.</h2>               
                 <h2 v-else>Fail to Create, username already existed</h2>
@@ -38,7 +41,8 @@
                     
                     <h2>New Note:</h2>            
                     <textarea v-bind:class="AddSize==1?'NoteContent':AddSize==0?'NoteContent-S':'NoteContent-L'"
-                                             v-model="AddContent" placeholder="Type here ..." ></textarea>
+                                             v-model="AddContent" placeholder="Type here ..." 
+                                             oninput='this.style.height="";this.style.height=this.scrollHeight+"px"'></textarea>
                     <div class="button-container">                        
                         <img class="col-icon-btn" @click="EditCol('Grey')" src="./icon/grey.png">
                         <img class="col-icon-btn" @click="EditCol('Yellow')" src="./icon/yellow.png">
@@ -60,8 +64,9 @@
                                                              (isEdit && EditColour=='Green' && Note.id==EditId) || (Note.id!=EditId && Note.color=='Green')?'add-note-container-green':
                                                              (isEdit && EditColour=='Blue' && Note.id==EditId) || (Note.id!=EditId && Note.color=='Blue')?'add-note-container-blue':'add-note-container'">                    
                         <hr>
-                        <textarea v-if="isEdit && Note.id==EditId" v-bind:class="EditSize==1?'NoteContent': EditSize==0?'NoteContent-S':'NoteContent-L'"
-                                     v-model="EditContent">{{Note.content}}</textarea>
+                        <textarea v-if="isEdit && Note.id==EditId" v-bind:class="EditSize==1?'NoteContent': EditSize==0?'NoteContent-S':'NoteContent-L'" id="editbox" 
+                                     v-model="EditContent" onclick='this.style.height="";this.style.height=this.scrollHeight+"px"'
+                                     oninput='this.style.height="";this.style.height=this.scrollHeight+"px"'>{{Note.content}}</textarea>
                         <p v-else v-bind:class="Note.size==1?'PM':Note.size==2?'PL':'PS'" id="NoteContent">{{Note.content}}</p>
                                                 
                         <div class="button-container" v-if="isEdit && Note.id==EditId" >

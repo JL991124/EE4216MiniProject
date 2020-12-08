@@ -15,6 +15,17 @@ var app = new Vue( {
         Notes: [],
     },
 
+    created: async function(){
+        if (localStorage.getItem("MyToken") !== null) {
+            console.log("in");
+            this.MyToken = localStorage.MyToken;
+            this.MyTokenpw = localStorage.MyTokenpw;
+            this.Uname = localStorage.uname;
+            this.ViewNote();
+        }        
+    },
+
+
     methods: {
         CreateUser: async function() {
             if(document.getElementById("uname").value.length==0 
@@ -32,8 +43,7 @@ var app = new Vue( {
             headers: {}
             })
             .then(res => res.text())
-            .then(data => this.CreateStatus = data)            
-            
+            .then(data => this.CreateStatus = data)           
         },
 
         ViewNote: async function() {
@@ -46,11 +56,21 @@ var app = new Vue( {
                 }),
                 headers: {}
             })            
-            .then(res => res.json())
+            .then(async function(res) {
+                let clone1 = res.clone();
+                var x = 'thx'
+                await clone1.text().then(data => x = data);
+                if (x == "Not Authorized") {
+                    localStorage.clear();
+                    alert("Sticky Notes is open in another window. Please login again to use in this window.")
+                    location.reload();
+                }                    
+                return res.json();
+            })
             .then(data => this.Notes = data)
         },
 
-        UserLogin: async function() {
+        UserLogin: async function() {           
             if(document.getElementById("uname").value.length==0 
                 || document.getElementById("pw").value.length==0) {
                     alert("Username or Password is Empty, Please try again");
@@ -67,13 +87,20 @@ var app = new Vue( {
             })
             .then(res => res.text())
             .then(data => this.MyToken = data)           
-            if (this.MyToken.length==64) {                
+            await new Promise(r => setTimeout(r,1000));
+            if (this.MyToken.length==64) {              
+                localStorage.MyToken = this.MyToken;            
                 this.ViewNote(); 
             }                    
         },
 
+        UserLogout: async function() {
+            localStorage.clear();
+            location.reload();
+        },
+
         GetTokenpw: async function() {
-            fetch('http://54.226.195.55:8080/api/GetMyTokenpw', {
+            await fetch('http://54.226.195.55:8080/api/GetMyTokenpw', {
                 method: 'POST',
                 body: JSON.stringify({
                     "username": document.getElementById("uname").value,
@@ -83,14 +110,14 @@ var app = new Vue( {
             })
             .then(res => res.text())
             .then(data => this.MyTokenpw = data)
+            localStorage.MyTokenpw = this.MyTokenpw;
         },      
 
         AddNote: async function() {
             if (this.AddContent == '') {
                 alert("Empty Note Content");
                 return;
-            }
-            
+            }            
             await fetch('http://54.226.195.55:8080/api/postMemo', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -102,7 +129,6 @@ var app = new Vue( {
                 headers: {}
             })
             .then(res => res.text())
-            .then(console.log)
             this.AddContent = '';
             this.ViewNote();
         },
@@ -149,8 +175,7 @@ var app = new Vue( {
             this.EditId = id.toString();
             this.EditContent = content;
             this.EditColour = col;
-            this.EditSize = size.toString(); 
-            console.log(this.EditId,this.EditContent,this.EditColour,this.EditSize);           
+            this.EditSize = size.toString();      
         },
 
         UpdateCol: function(code) {
@@ -170,7 +195,6 @@ var app = new Vue( {
 
         UpdateNote: async function(UpdateId) {            
             this.isEdit = false;
-            console.log(this.EditId,this.EditContent,this.EditColour,this.EditSize);
             await fetch('http://54.226.195.55:8080/api/updateMemo', {
                 method: 'POST',
                 body: JSON.stringify({
